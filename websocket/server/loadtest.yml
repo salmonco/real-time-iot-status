@@ -1,0 +1,45 @@
+config:
+  target: "http://localhost:5001"
+  socketio:
+    transports: ["websocket"]
+  phases:
+    - duration: 60
+      arrivalRate: 30
+
+scenarios:
+  - name: "Enter Farm List and Subscribe to Farm Data"
+    engine: "socketio"
+    flow:
+      - emit:
+          channel: "enterFarmList"
+      - think: 5
+      - emit:
+          channel: "subscribeFarm"
+          data:
+            farmKey: "farm1"
+      - think: 5
+      - emit:
+          channel: "subscribeFactor"
+          data:
+            farmKey: "farm1"
+            factorKey: "light"
+      - think: 5
+      - emit:
+          channel: "subscribeFactor"
+          data:
+            farmKey: "farm1"
+            factorKey: "humidity"
+      - think: 5
+      - emit:
+          channel: "unsubscribeFactor"
+          data:
+            farmKey: "farm1"
+            factorKey: "light"
+      - think: 5
+      - emit:
+          channel: "unsubscribeFarm"
+          data:
+            farmKey: "farm1"
+      - think: 5
+      - emit:
+          channel: "leaveFarmList"
