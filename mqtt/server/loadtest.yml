@@ -1,0 +1,45 @@
+config:
+  target: "ws://broker.emqx.io:8083/mqtt"
+  engines:
+    mqtt: {}
+  phases:
+    - duration: 60
+      arrivalRate: 30
+
+scenarios:
+  - name: "Enter Farm List and Subscribe to Farm Data"
+    flow:
+      - log: "Publishing enterFarmList"
+      - publish:
+          topic: "enterFarmList"
+          payload: ""
+      - think: 5
+      - log: "Publishing subscribeFarm/farm1"
+      - publish:
+          topic: "subscribeFarm/farm1"
+          payload: ""
+      - think: 5
+      - log: "Publishing subscribeFactor/farm1/light"
+      - publish:
+          topic: "subscribeFactor/farm1/light"
+          payload: ""
+      - think: 5
+      - log: "Publishing subscribeFactor/farm1/humidity"
+      - publish:
+          topic: "subscribeFactor/farm1/humidity"
+          payload: ""
+      - think: 5
+      - log: "Publishing unsubscribeFactor/farm1/light"
+      - publish:
+          topic: "unsubscribeFactor/farm1/light"
+          payload: ""
+      - think: 5
+      - log: "Publishing unsubscribeFarm/farm1"
+      - publish:
+          topic: "unsubscribeFarm/farm1"
+          payload: ""
+      - think: 5
+      - log: "Publishing leaveFarmList"
+      - publish:
+          topic: "leaveFarmList"
+          payload: ""

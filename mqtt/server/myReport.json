@@ -1,0 +1,132 @@
+{
+  "aggregate": {
+    "counters": {
+      "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 1800,
+      "vusers.created": 1800,
+      "errors.an URL must be specified": 1800,
+      "vusers.failed": 1800
+    },
+    "rates": {},
+    "firstCounterAt": 1729701679511,
+    "lastCounterAt": 1729701739670,
+    "firstMetricAt": 1729701679511,
+    "lastMetricAt": 1729701739670,
+    "period": 1729701730000,
+    "summaries": {},
+    "histograms": {}
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 11,
+        "vusers.created": 11,
+        "errors.an URL must be specified": 11,
+        "vusers.failed": 11
+      },
+      "rates": {},
+      "firstCounterAt": 1729701679511,
+      "lastCounterAt": 1729701679952,
+      "firstMetricAt": 1729701679511,
+      "lastMetricAt": 1729701679952,
+      "period": "1729701670000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 300,
+        "vusers.created": 300,
+        "errors.an URL must be specified": 300,
+        "vusers.failed": 300
+      },
+      "rates": {},
+      "firstCounterAt": 1729701680003,
+      "lastCounterAt": 1729701689951,
+      "firstMetricAt": 1729701680003,
+      "lastMetricAt": 1729701689951,
+      "period": "1729701680000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 300,
+        "vusers.created": 300,
+        "errors.an URL must be specified": 300,
+        "vusers.failed": 300
+      },
+      "rates": {},
+      "firstCounterAt": 1729701690002,
+      "lastCounterAt": 1729701699951,
+      "firstMetricAt": 1729701690002,
+      "lastMetricAt": 1729701699951,
+      "period": "1729701690000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 300,
+        "vusers.created": 300,
+        "errors.an URL must be specified": 300,
+        "vusers.failed": 300
+      },
+      "rates": {},
+      "firstCounterAt": 1729701700002,
+      "lastCounterAt": 1729701709951,
+      "firstMetricAt": 1729701700002,
+      "lastMetricAt": 1729701709951,
+      "period": "1729701700000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 300,
+        "vusers.created": 300,
+        "errors.an URL must be specified": 300,
+        "vusers.failed": 300
+      },
+      "rates": {},
+      "firstCounterAt": 1729701710003,
+      "lastCounterAt": 1729701719952,
+      "firstMetricAt": 1729701710003,
+      "lastMetricAt": 1729701719952,
+      "period": "1729701710000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 300,
+        "vusers.created": 300,
+        "errors.an URL must be specified": 300,
+        "vusers.failed": 300
+      },
+      "rates": {},
+      "firstCounterAt": 1729701720003,
+      "lastCounterAt": 1729701729952,
+      "firstMetricAt": 1729701720003,
+      "lastMetricAt": 1729701729952,
+      "period": "1729701720000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Enter Farm List and Subscribe to Farm Data": 289,
+        "vusers.created": 289,
+        "errors.an URL must be specified": 289,
+        "vusers.failed": 289
+      },
+      "rates": {},
+      "firstCounterAt": 1729701730003,
+      "lastCounterAt": 1729701739670,
+      "firstMetricAt": 1729701730003,
+      "lastMetricAt": 1729701739670,
+      "period": "1729701730000",
+      "summaries": {},
+      "histograms": {}
+    }
+  ]
+}
