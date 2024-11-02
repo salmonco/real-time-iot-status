@@ -1,7 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect } from "react";
 import mqtt from "mqtt";
 
-const ENDPOINT = "ws://broker.emqx.io:8083/mqtt";
+// const ENDPOINT = "ws://broker.emqx.io:8083/mqtt";
+const ENDPOINT = "ws://localhost:1883";
 
 const mqttClient = mqtt.connect(ENDPOINT);
 const mqttClientContext = createContext(mqttClient);
