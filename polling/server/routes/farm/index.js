@@ -30,7 +30,8 @@ const sendFarmList = (socket, farmDataStore) => {
     Object.keys(farmList).forEach((farmKey) => {
       farmDataStore[farmKey] = farmList[farmKey];
     });
-  }, 2000);
+  }, Math.random() * 2000 + 2000);
+  // }, 2000);
 
   const clearFarmListInterval = () => {
     clearInterval(intervalId);

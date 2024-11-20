@@ -1,5 +1,5 @@
 import { useSocket } from "contexts/socket";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -32,11 +32,28 @@ const FarmListPage = () => {
   const socket = useSocket();
   const { farmList, addFarmFactorData } = useFarmData();
   console.log(farmList);
+
+  const [missedRequests, setMissedRequests] = useState(0);
+  const lastData = useRef<FarmList | null>(null);
+
   const fetchFarmData = async () => {
     try {
       const { data } = await axios.get<FarmList>(
         "http://localhost:5002/polling/farmList"
       );
+
+      console.log("data", data);
+      console.log("lastData", lastData.current);
+
+      if (lastData.current) {
+        const isSameData =
+          JSON.stringify(data) === JSON.stringify(lastData.current);
+
+        if (isSameData) {
+          setMissedRequests((prev) => prev + 1);
+        }
+      }
+      lastData.current = data;
 
       Object.keys(data).forEach((farmKey) => {
         Object.entries(data[farmKey]).forEach(([factorKey, factorData]) => {
@@ -113,6 +130,9 @@ const FarmListPage = () => {
             <Line data={getChartData(farmList[farmKey])} />
           </button>
         ))}
+      </div>
+      <div className="text-center mt-4">
+        <p>헛발질(불필요한 요청) 횟수: {missedRequests}</p>
       </div>
     </div>
   );
