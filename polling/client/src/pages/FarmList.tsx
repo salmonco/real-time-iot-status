@@ -11,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Farm } from "types/farm";
+import { Farm, FarmList } from "types/farm";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFarmData } from "contexts/farmDataContext";
@@ -30,16 +30,18 @@ ChartJS.register(
 const FarmListPage = () => {
   const navigate = useNavigate();
   const socket = useSocket();
-  const { farmList, addFarmData } = useFarmData();
-
+  const { farmList, addFarmFactorData } = useFarmData();
+  console.log(farmList);
   const fetchFarmData = async () => {
     try {
-      const { data } = await axios.get(
+      const { data } = await axios.get<FarmList>(
         "http://localhost:5002/polling/farmList"
       );
 
       Object.keys(data).forEach((farmKey) => {
-        addFarmData(farmKey, data[farmKey]);
+        Object.entries(data[farmKey]).forEach(([factorKey, factorData]) => {
+          addFarmFactorData(farmKey, factorKey, factorData);
+        });
       });
     } catch (error) {
       console.error("농장 데이터 가져오기 실패:", error);
@@ -69,7 +71,14 @@ const FarmListPage = () => {
       datasets: [
         {
           label: "Farm Data",
-          data: [light, humidity, temperature, soilMoisture, co2, waterLevel],
+          data: [
+            light.at(-1),
+            humidity.at(-1),
+            temperature.at(-1),
+            soilMoisture.at(-1),
+            co2.at(-1),
+            waterLevel.at(-1),
+          ],
           backgroundColor: [
             "rgba(75, 192, 192, 0.6)",
             "rgba(153, 102, 255, 0.6)",

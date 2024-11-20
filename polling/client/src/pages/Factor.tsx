@@ -2,19 +2,18 @@ import axios from "axios";
 import { useFarmData } from "contexts/farmDataContext";
 import { useSocket } from "contexts/socket";
 import { FARM_FACTORS } from "libs/constant/farm";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router-dom";
 
 const FactorPage = () => {
-  const [history, setHistory] = useState<number[]>([]);
   const navigate = useNavigate();
   const socket = useSocket();
   const { farmKey, factorKey } = useParams<{
     farmKey: string;
     factorKey: string;
   }>();
-  const { addFarmFactorData } = useFarmData();
+  const { farmList, addFarmFactorData } = useFarmData();
   const MAX_HISTORY_SIZE = 40;
 
   const fetchFarmData = async () => {
@@ -26,12 +25,6 @@ const FactorPage = () => {
       );
 
       addFarmFactorData(farmKey, factorKey, data);
-      setHistory((prev) => {
-        const updated = [...prev, data];
-        return updated.length > MAX_HISTORY_SIZE
-          ? updated.slice(-MAX_HISTORY_SIZE)
-          : updated;
-      });
     } catch (error) {
       console.error("농장 데이터 가져오기 실패:", error);
     }
@@ -71,7 +64,7 @@ const FactorPage = () => {
     return factor ? factor.label : "";
   };
 
-  if (!factorKey) return null;
+  if (!farmKey || !factorKey) return null;
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">
@@ -79,7 +72,10 @@ const FactorPage = () => {
       </h1>
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <Line
-          data={getChartFactorData(getLabelByKey(factorKey), history)}
+          data={getChartFactorData(
+            getLabelByKey(factorKey),
+            farmList[farmKey][factorKey].slice(-MAX_HISTORY_SIZE)
+          )}
           options={{ maintainAspectRatio: false }}
         />
       </div>

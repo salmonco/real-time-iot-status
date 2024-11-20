@@ -3,7 +3,6 @@ import { FarmList } from "types/farm";
 
 interface FarmDataContextType {
   farmList: FarmList;
-  addFarmData: (farmKey: string, data: any) => void;
   addFarmFactorData: (farmKey: string, factorKey: string, data: any) => void;
 }
 
@@ -18,33 +17,25 @@ export const useFarmData = () => {
 export const FarmDataProvider = ({ children }: { children: ReactNode }) => {
   const [farmList, setFarmList] = useState<FarmList>({});
 
-  const addFarmData = (farmKey: string, data: any) => {
+  const addFarmFactorData = (
+    farmKey: string,
+    factorKey: string,
+    value: number
+  ) => {
     setFarmList((prev) => ({
       ...prev,
       [farmKey]: {
-        ...prev[farmKey],
-        ...data,
-      },
-    }));
-  };
-
-  const addFarmFactorData = (farmKey: string, factorKey: string, data: any) => {
-    setFarmList((prev) => ({
-      ...prev,
-      [farmKey]: {
-        ...prev[farmKey],
-        [factorKey]: {
-          ...prev[factorKey],
-          ...data,
-        },
+        ...(prev[farmKey] || {}), // 기존 농장 데이터가 없으면 초기화
+        [factorKey]: [
+          ...(prev[farmKey]?.[factorKey] || []), // 기존 값 배열에 새 데이터 추가
+          value,
+        ],
       },
     }));
   };
 
   return (
-    <FarmDataContext.Provider
-      value={{ farmList, addFarmData, addFarmFactorData }}
-    >
+    <FarmDataContext.Provider value={{ farmList, addFarmFactorData }}>
       {children}
     </FarmDataContext.Provider>
   );

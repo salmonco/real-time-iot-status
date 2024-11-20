@@ -2,24 +2,16 @@ import axios from "axios";
 import { useFarmData } from "contexts/farmDataContext";
 import { useSocket } from "contexts/socket";
 import { FARM_FACTORS } from "libs/constant/farm";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import { useNavigate, useParams } from "react-router-dom";
 import { Farm } from "types/farm";
 
 const FarmPage = () => {
-  const [history, setHistory] = useState<Record<string, number[]>>({
-    light: [],
-    humidity: [],
-    temperature: [],
-    soilMoisture: [],
-    co2: [],
-    waterLevel: [],
-  });
   const navigate = useNavigate();
   const socket = useSocket();
   const { farmKey } = useParams<{ farmKey: string }>();
-  const { farmList, addFarmData } = useFarmData();
+  const { farmList, addFarmFactorData } = useFarmData();
   const MAX_HISTORY_SIZE = 40;
 
   const fetchFarmData = async () => {
@@ -30,30 +22,9 @@ const FarmPage = () => {
         `http://localhost:5002/polling/farms/${farmKey}`
       );
 
-      addFarmData(farmKey, data);
-
-      const { light, humidity, temperature, soilMoisture, co2, waterLevel } =
-        data;
-
-      const updateHistory = (key: keyof Farm, value: number) => {
-        setHistory((prev) => {
-          const updated = [...prev[key], value];
-          return {
-            ...prev,
-            [key]:
-              updated.length > MAX_HISTORY_SIZE
-                ? updated.slice(-MAX_HISTORY_SIZE)
-                : updated,
-          };
-        });
-      };
-
-      updateHistory("light", light);
-      updateHistory("humidity", humidity);
-      updateHistory("temperature", temperature);
-      updateHistory("soilMoisture", soilMoisture);
-      updateHistory("co2", co2);
-      updateHistory("waterLevel", waterLevel);
+      Object.entries(data).forEach(([factorKey, factorData]) => {
+        addFarmFactorData(farmKey, factorKey, factorData);
+      });
     } catch (error) {
       console.error("농장 데이터 가져오기 실패:", error);
     }
@@ -83,7 +54,14 @@ const FarmPage = () => {
       datasets: [
         {
           label: `${farmKey}`,
-          data: [light, humidity, temperature, soilMoisture, co2, waterLevel],
+          data: [
+            light.at(-1),
+            humidity.at(-1),
+            temperature.at(-1),
+            soilMoisture.at(-1),
+            co2.at(-1),
+            waterLevel.at(-1),
+          ],
           backgroundColor: [
             "rgba(75, 192, 192, 0.6)",
             "rgba(153, 102, 255, 0.6)",
@@ -142,7 +120,10 @@ const FarmPage = () => {
           >
             <h3 className="text-xl font-semibold mb-4 text-center">{label}</h3>
             <Line
-              data={getChartFactorData(label, history[key])}
+              data={getChartFactorData(
+                label,
+                farmList[farmKey][key].slice(-MAX_HISTORY_SIZE)
+              )}
               options={chartOptions}
               style={chartStyle}
             />
