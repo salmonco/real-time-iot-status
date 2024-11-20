@@ -1,5 +1,5 @@
 import { useSocket } from "contexts/socket";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,9 +11,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Farm, FarmList } from "types/farm";
+import { Farm } from "types/farm";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useFarmData } from "contexts/farmDataContext";
 
 // Chart.js의 스케일과 플러그인을 등록
 ChartJS.register(
@@ -27,14 +28,19 @@ ChartJS.register(
 );
 
 const FarmListPage = () => {
-  const [farmList, setFarmList] = useState<FarmList>({});
   const navigate = useNavigate();
   const socket = useSocket();
+  const { farmList, addFarmData } = useFarmData();
 
   const fetchFarmData = async () => {
     try {
-      const res = await axios.get("http://localhost:5002/polling/farmList");
-      setFarmList(res.data);
+      const { data } = await axios.get(
+        "http://localhost:5002/polling/farmList"
+      );
+
+      Object.keys(data).forEach((farmKey) => {
+        addFarmData(farmKey, data[farmKey]);
+      });
     } catch (error) {
       console.error("농장 데이터 가져오기 실패:", error);
     }

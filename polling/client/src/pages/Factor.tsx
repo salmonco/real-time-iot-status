@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useFarmData } from "contexts/farmDataContext";
 import { useSocket } from "contexts/socket";
 import { FARM_FACTORS } from "libs/constant/farm";
 import { useEffect, useState } from "react";
@@ -13,13 +14,18 @@ const FactorPage = () => {
     farmKey: string;
     factorKey: string;
   }>();
+  const { addFarmFactorData } = useFarmData();
   const MAX_HISTORY_SIZE = 40;
 
   const fetchFarmData = async () => {
+    if (!farmKey || !factorKey) return;
+
     try {
       const { data } = await axios.get(
         `http://localhost:5002/polling/farms/${farmKey}/${factorKey}`
       );
+
+      addFarmFactorData(farmKey, factorKey, data);
       setHistory((prev) => {
         const updated = [...prev, data];
         return updated.length > MAX_HISTORY_SIZE

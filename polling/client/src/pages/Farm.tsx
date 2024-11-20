@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useFarmData } from "contexts/farmDataContext";
 import { useSocket } from "contexts/socket";
 import { FARM_FACTORS } from "libs/constant/farm";
 import { useEffect, useState } from "react";
@@ -7,7 +8,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Farm } from "types/farm";
 
 const FarmPage = () => {
-  const [farmData, setFarmData] = useState<Farm>({} as Farm);
   const [history, setHistory] = useState<Record<string, number[]>>({
     light: [],
     humidity: [],
@@ -19,14 +19,18 @@ const FarmPage = () => {
   const navigate = useNavigate();
   const socket = useSocket();
   const { farmKey } = useParams<{ farmKey: string }>();
+  const { farmList, addFarmData } = useFarmData();
   const MAX_HISTORY_SIZE = 40;
 
   const fetchFarmData = async () => {
+    if (!farmKey) return;
+
     try {
       const { data } = await axios.get(
         `http://localhost:5002/polling/farms/${farmKey}`
       );
-      setFarmData(data);
+
+      addFarmData(farmKey, data);
 
       const { light, humidity, temperature, soilMoisture, co2, waterLevel } =
         data;
@@ -117,6 +121,7 @@ const FarmPage = () => {
 
   const chartStyle = { width: "100%", height: "auto" };
 
+  if (!farmKey) return null;
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">
@@ -124,7 +129,7 @@ const FarmPage = () => {
       </h1>
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <Line
-          data={getChartData(farmData)}
+          data={getChartData(farmList[farmKey])}
           options={{ maintainAspectRatio: false }}
         />
       </div>
